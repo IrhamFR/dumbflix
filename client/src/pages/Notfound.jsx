@@ -5,7 +5,7 @@ function Notfound() {
   return (
     <div className='d-flex justify-content-center flex-column align-items-center'>
         <img src={NotFoundImage} width={350} alt="Not Found" />
-        <h1 className='text-light'>Sorry Not Found</h1>
+        <h1 className='text-light'>Page Not Found</h1>
     </div>
   )
 }

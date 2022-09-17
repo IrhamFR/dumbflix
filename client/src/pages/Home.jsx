@@ -8,10 +8,13 @@ function Home() {
     <div>
       <div className='background-hero-home container-fluid mx-auto'>
         <div className='hero ms-5 text-light d-flex flex-column align-content-center justify-content-center'>
-            <h1 className='text-size text-start'>PEAKY BLINDERS</h1>
-            <p className=''>Peaky Blinders is an epic centred on a crime family of mixed Irish Catholic and Romani origins based in Birmingham, England, starting in 1919, several months after the end of the First World War in November 1918.</p>
+            <h1 className='text-size text-start'>THE WITCHER</h1>
+            <p className=''>The Witcher is a fantasy drama television series created by Lauren Schmidt Hissrich for Dumbflix, 
+                            based on the book series of the same name by Polish writer Andrzej Sapkowski. Set on a fictional, 
+                            medieval-inspired landmass known as the Continent, The Witcher explores the legend of Geralt of 
+                            Rivia, Yennefer of Vengerberg and Princess Ciri.</p>
             <div className='mb-4'>
-              <span>2013</span> 
+              <span>2019</span> 
               <button className='btn btn-outline-light ms-2 py-1 tv-s shadow'>TV Series</button>
             </div>
             <div>

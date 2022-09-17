@@ -58,18 +58,32 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		Gender:    request.Gender,
 		Phone:     request.Phone,
 		Address:   request.Address,
-		Subscribe: request.Subscribe,
-		Status:    "member",
+		Subscribe: false,
+		Status:    "Admin",
 	}
 
 	data, err := h.AuthRepository.Register(user)
+
+	if data.ID <= 2 {
+		data.Status = "Admin"
+		data, err := h.AuthRepository.Register(data)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			response := dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()}
+			json.NewEncoder(w).Encode(response)
+		}
+		w.WriteHeader(http.StatusOK)
+		response := dto.SuccessResult{Code: http.StatusOK, Data: data}
+		json.NewEncoder(w).Encode(response)
+	}
+
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		response := dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()}
 		json.NewEncoder(w).Encode(response)
 	}
 	w.WriteHeader(http.StatusOK)
-	response := dto.SuccessResult{Code: http.StatusOK, Data: convertResponse(data)}
+	response := dto.SuccessResult{Code: http.StatusOK, Data: data}
 	json.NewEncoder(w).Encode(response)
 }
 
@@ -111,7 +125,7 @@ func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
 	claims := jwt.MapClaims{}
 	claims["id"] = user.ID
 	claims["status"] = user.Status
-	claims["exp"] = time.Now().Add(time.Hour * 2).Unix() // 2 jam exp
+	claims["exp"] = time.Now().Add(time.Hour * 2).Unix() // 2 hour exp
 
 	token, errGenerateToken := jwtToken.GenerateToken(&claims)
 
@@ -122,10 +136,7 @@ func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	loginResponse := authdto.LoginResponse{
-		// ID:       user.ID,
-		// FullName: user.FullName,
 		Email: user.Email,
-		// Status:   user.Status,
 		Token: token,
 	}
 
@@ -138,22 +149,25 @@ func (h *handlerAuth) CheckAuth(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	userInfo := r.Context().Value("userInfo").(jwt.MapClaims)
-	userID := int(userInfo["id"].(float64))
+	userExp := int(userInfo["id"].(float64))
 
 	// Check-User By ID
-	user, err := h.AuthRepository.Getuser(userID)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
-		json.NewEncoder(w).Encode(response)
-		return
+	// user, err := h.AuthRepository.Getuser(userID)
+	// if err != nil {
+	// 	w.WriteHeader(http.StatusBadRequest)
+	// 	response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
+	// 	json.NewEncoder(w).Encode(response)
+	// 	return
+	// }
+	var status string
+	status = "active"
+
+	if int(time.Now().Unix()) > int(userExp) {
+		status = "expired"
 	}
 
 	CheckAuthResponse := authdto.CheckAuthResponse{
-		Id:       user.ID,
-		FullName: user.FullName,
-		Email:    user.Email,
-		Status:   user.Status,
+		Status: status,
 	}
 
 	w.Header().Set("Content-Type", "application/json")

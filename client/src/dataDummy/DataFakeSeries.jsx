@@ -24,7 +24,7 @@ import arrowSeries from '../Images/arrow.png'
                 seriesImg: peakySeries,
                 title:"Peaky Blinder",
                 year: 2013,
-                type: "Series"
+                type: "Series",
             },
             {
                 seriesImg: moneySeries,

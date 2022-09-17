@@ -160,7 +160,6 @@ func (h *handlers) DeleteEpisode(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	response := dto.SuccessResult{Code: http.StatusOK, Data: convertResponseEpisode(data)}
 	json.NewEncoder(w).Encode(response)
-
 }
 
 func convertResponseEpisode(e models.Episode) models.EpisodeResponse {

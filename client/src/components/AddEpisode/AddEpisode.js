@@ -10,10 +10,6 @@ const AddEpisode = () => {
 		{ titleEpisode: '', attachThumbnail: '', linkFilm: '' }
 	]);
 
-	const addRate = () => {
-		setRates([ ...rates, { titleEpisode: '', attachThumbnail: '', linkFilm: '' } ]);
-	};
-
 	const handleChange = (event) => {
 		const updateForm = [ ...rates ];
 		updateForm[event.target.dataset.id][event.target.className] = event.target.value;
@@ -101,7 +97,7 @@ const AddEpisode = () => {
 									/>
 								</div>
 								<div className='d-flex flex-end' style={{marginLeft: "929px"}}>
-									<Button className="btn bg-danger text-white border-0 px-4" as={Link} to='/video'>Add Episode</Button>
+									<Button className="btn bg-danger text-white border-0 px-4" as={Link} to='/video-admin'>Add Episode</Button>
 								</div>
 							</div>
 						);

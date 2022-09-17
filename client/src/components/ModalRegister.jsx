@@ -2,25 +2,27 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import { useMutation } from 'react-query';
+import { API } from '../config/api';
+import { Alert } from 'bootstrap';
 
-const initialUser = {
-  email: "",
-  password: "",
-  fullname: "",
-  gender: "",
-  phone: "",
-  address: ""
-}
 
 function ModalRegister( {handleClose, show} ) {
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    fullname: "",
+    gender: "",
+    phone: "",
+    address: ""
+  });
     const [isRegister, setIsRegister] = useState(true)
 
-    
     const switchRegister = () => {
-      setUserData(initialUser)
+      setUserData(form)
       setIsRegister(!isRegister)
     }
-    const [userData, setUserData] = useState(initialUser)
+    const [userData, setUserData] = useState(form)
 
     const handleChange = (e) => {
       setUserData((previousState) => ({
@@ -29,14 +31,43 @@ function ModalRegister( {handleClose, show} ) {
       }))
     }
 
-    const handleSubmit = (e) => {
-      e.preventDefault()
-      handleClose()
-      if(isRegister) {
-        localStorage.setItem("user", JSON.stringify(userData))
-
+    const handleSubmit = useMutation(async (e) => {
+      try {
+        e.preventDefault();
+    
+        // Configuration Content-type
+        const config = {
+          headers: {
+            'Content-type': 'application/json',
+          },
+        };
+    
+        // Data body
+        const body = JSON.stringify(form);
+    
+        // Insert data user to database
+        const response = await API.post('/register', body, config);
+    
+        // Handling response here
+      } catch (error) {
+        const alert = (
+          <Alert variant="danger" className="py-1">
+            Failed
+          </Alert>
+        );
+        // setMessage(alert);
+        console.log(error);
       }
-    }
+    });
+
+    // const handleSubmit = (e) => {
+    //   e.preventDefault()
+    //   handleClose()
+    //   if(isRegister) {
+    //     localStorage.setItem("user", JSON.stringify(userData))
+
+    //   }
+    // }
 
   return (
     <>
@@ -46,7 +77,7 @@ function ModalRegister( {handleClose, show} ) {
           <Modal.Title>{isRegister ? "Register" : "Login"}</Modal.Title>
         </Modal.Header>
         <Modal.Body className="bg-dark">
-          <Form>
+          <Form onSubmit={(e) => handleSubmit.mutate(e)}>
             {/* Email */}
             <Form.Group className="mb-3" controlId="email">
               <Form.Control

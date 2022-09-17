@@ -79,7 +79,6 @@ function NavbarAdmin() {
           <div>
             {isLogin ? (
               <Dropdown>
-                <Button className="bg-transparent border-0" as={Link} to='/admin'></Button>
                 <Dropdown.Toggle variant="dark" id="dropdown-basic">
                   <img src={userPhoto} width={40} alt="user" />
                 </Dropdown.Toggle>

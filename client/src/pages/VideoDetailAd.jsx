@@ -1,9 +1,10 @@
 import React, { useEffect,useState } from "react";
 import dummyPeaky from '../Images/peakyblindersCard.jfif'
 import episode from '../Images/episode1-peaky.jfif'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
-function VideoDetail() {
+function VideoDetailAd() {
 
   const [isLogin, setIsLogin] =useState(false)
 
@@ -54,15 +55,15 @@ function VideoDetail() {
           </div>
 
           <div className="cardEpisode">
-            {/* <div className="d-flex justify-content-end">
+            <div className="d-flex justify-content-end">
               <Button className="btn bg-danger text-white border-0 px-5 mt-2 mb-4" as={Link} to='/add-episode'>Add Episode</Button>
-            </div> */}
+            </div>
             <img src={episode} alt="episode" className="imgEpisode" />
             <small className="text-light">Peaky Blinders : Episode 1</small>
           </div>
         </div>
       </>
     );
-}
+} 
 
-export default VideoDetail;
+export default VideoDetailAd;

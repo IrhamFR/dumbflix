@@ -7,6 +7,13 @@ export const styles = {
     padding: "0px 150px",
     fontSize: "15px",
   },
+  buttone: {
+    display: "flex",
+    margin: "0px 150px 0px 0px",
+    color: "white",
+    flexDirection: "column",
+    fontSize: "15px",
+  },
   customInput: {
     width: "100%",
     height: "50px",

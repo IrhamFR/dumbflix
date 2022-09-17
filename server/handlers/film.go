@@ -73,6 +73,16 @@ func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	dataContext := r.Context().Value("dataFile")
+	filename := dataContext.(string)
+
+	var categoriesId []int
+	for _, r := range r.FormValue("categoryId") {
+		if int(r-'0') >= 0 {
+			categoriesId = append(categoriesId, int(r-'0'))
+		}
+	}
+
 	validation := validator.New()
 	err := validation.Struct(request)
 	if err != nil {
@@ -85,7 +95,7 @@ func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 
 	film := models.Film{
 		Title:         request.Title,
-		ThumbnailFilm: request.ThumbnailFilm,
+		ThumbnailFilm: filename,
 		Year:          request.Year,
 		CategoryID:    request.CategoryID,
 		Description:   request.Description,

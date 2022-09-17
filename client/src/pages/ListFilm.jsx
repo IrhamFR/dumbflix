@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import MovieContainer from '../components/MovieContainer'
-import SeriesContainer from '../components/SeriesContainer'
+import MovieContainerAd from '../components/MovieContainerAd'
+import SeriesContainerAd from '../components/SeriesContainerAd'
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -28,7 +28,7 @@ function ListFilm() {
     
     <div className='sectionSeries'>
       {category == "TV Series" ? 
-      ( <SeriesContainer /> ):(<MovieContainer />)}
+      ( <SeriesContainerAd /> ):(<MovieContainerAd />)}
     </div>
       
     </>

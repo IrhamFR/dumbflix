@@ -100,7 +100,7 @@ func (h *handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 func (h *handler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	request := new(usersdto.UpdateUserRequest) //take pattern data submission
+	request := new(usersdto.UpdateUserRequest)
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
