@@ -11,7 +11,6 @@ import (
 	"strconv"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/golang-jwt/jwt/v4"
 	"github.com/gorilla/mux"
 )
 
@@ -30,27 +29,27 @@ func (h *handlerTransaction) FindTransactions(w http.ResponseWriter, r *http.Req
 	for i, transaction := range transactions {
 		transactions[i].Attache = os.Getenv("PATH_FILE") + transaction.Attache
 	}
-	userInfo := r.Context().Value(string("userInfo")).(jwt.MapClaims)
-	userInfoStatus := userInfo["status"].(string)
-	userInfoId := userInfo["id"].(float64)
+	// userInfo := r.Context().Value(string("userInfo")).(jwt.MapClaims)
+	// userInfoStatus := userInfo["status"].(string)
+	// userInfoId := userInfo["id"].(float64)
 
-	if userInfoStatus == "Admin" {
-		transactionByUserId, err := h.TransactionRepository.FindTransactionsByUserId(int(userInfoId))
+	// if userInfoStatus == "Admin" {
+	// 	transactionByUserId, err := h.TransactionRepository.FindTransactionsByUserId(int(userInfoId))
 
-		for i, transaction := range transactionByUserId {
-			transactionByUserId[i].Attache = os.Getenv("PATH_FILE") + transaction.Attache
-		}
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			response := dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()}
-			json.NewEncoder(w).Encode(response)
-			return
-		}
-		w.WriteHeader(http.StatusOK)
-		response := dto.SuccessResult{Code: http.StatusOK, Data: transactionByUserId}
-		json.NewEncoder(w).Encode(response)
-		return
-	}
+	// 	for i, transaction := range transactionByUserId {
+	// 		transactionByUserId[i].Attache = os.Getenv("PATH_FILE") + transaction.Attache
+	// 	}
+	// 	if err != nil {
+	// 		w.WriteHeader(http.StatusInternalServerError)
+	// 		response := dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()}
+	// 		json.NewEncoder(w).Encode(response)
+	// 		return
+	// 	}
+	// 	w.WriteHeader(http.StatusOK)
+	// 	response := dto.SuccessResult{Code: http.StatusOK, Data: transactionByUserId}
+	// 	json.NewEncoder(w).Encode(response)
+	// 	return
+	// }
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
