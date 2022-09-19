@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperclip, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useMutation } from 'react-query';
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from '../../context/userContext';
+import { API } from '../../config/api';
 import { styles } from './Styles';
-import  {useState} from 'react'
 
 const AddFilm = () => {
+
 	const [ rates, setRates ] = useState([
 		{ titleEpisode: '', attachThumbnail: '', linkFilm: '' }
 	]);

@@ -28,7 +28,9 @@ func (h *handlerFilm) FindFilms(w http.ResponseWriter, r *http.Request) {
 	films, err := h.FilmRepository.FindFilms()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(err.Error())
+		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
+		json.NewEncoder(w).Encode(response)
+		return
 	}
 
 	for i, f := range films {
@@ -145,21 +147,25 @@ func (h *handlerFilm) UpdateFilm(w http.ResponseWriter, r *http.Request) {
 		film.ThumbnailFilm = request.ThumbnailFilm
 	}
 
+	if request.Year != "" {
+		film.Year = request.Year
+	}
+
 	if request.Description != "" {
 		film.Description = request.Description
-	}
 
-	data, err := h.FilmRepository.UpdateFilm(film)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		response := dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()}
+		data, err := h.FilmRepository.UpdateFilm(film)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			response := dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()}
+			json.NewEncoder(w).Encode(response)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		response := dto.SuccessResult{Code: http.StatusOK, Data: convertResponseFilm(data)}
 		json.NewEncoder(w).Encode(response)
-		return
 	}
-
-	w.WriteHeader(http.StatusOK)
-	response := dto.SuccessResult{Code: http.StatusOK, Data: convertResponseFilm(data)}
-	json.NewEncoder(w).Encode(response)
 
 }
 

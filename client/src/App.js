@@ -3,7 +3,11 @@ import Layout from "./widgets/Layout";
 import LayoutAdmin from "./widgets/layoutAdmin";
 import { Routes, Route } from "react-router-dom";
 import { API, setAuthToken } from './config/api';
+import { useContext } from "react";
+import { UserContext } from "./context/userContext";
+import { useEffect } from "react";
 import VideoDetailAd from "./pages/VideoDetailAd";
+import { useNavigate } from "react-router-dom";
 import {
   Home,
   Movie,
@@ -23,7 +27,31 @@ if (localStorage.token) {
 }
 
 
+
 function App() {
+  // const navigate = useNavigate()
+  
+  const [state, dispatch] = useContext(UserContext);
+  // useEffect(() => {
+  //   // Redirect Auth
+  //   if (state.isLogin == false) {
+  //     navigate('/');
+  //   } else {
+  //     if (state.user.status == 'admin') {
+  //       navigate('/complain-admin');
+  //     } 
+  //     else if (state.user.status == 'customer') {
+  //       navigate('/');
+  //     }
+  //   }
+  // }, [state]);
+
+  useEffect(() => {
+    if(localStorage.token) {
+      setAuthToken(localStorage.token)
+    }
+  }, [state]);
+
   return (
     <Routes>
       <Route />

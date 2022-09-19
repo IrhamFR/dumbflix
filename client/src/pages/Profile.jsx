@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   FaEnvelope,
   FaFemale,
@@ -9,47 +9,32 @@ import {
   FaUserCircle,
 } from "react-icons/fa";
 import {Container, Row, Col, Card, Button} from 'react-bootstrap'
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import profileUser from '../Images/profileUser.png'
-const initialUser = {
-  email: "",
-  password: "",
-  fullname: "",
-  gender: "",
-  phone: "",
-  address: ""
-}
+import { UserContext } from '../context/userContext'
+import { API, setAuthToken } from '../config/api'
+// import { useQuery } from 'react-query'
+
 function Profile() {
-
-  const [isLogin, setIsLogin] = useState(false)
-  const [userData, setUserData] = useState(initialUser)
-
-  const user = JSON.parse(localStorage.getItem('user'))
-
-  const navigate = useNavigate()
-
-  useEffect(()=> {
-    if(user){
-      setIsLogin(true)
-      setUserData({
-        ...userData,
-        email: user?.email,
-        password: user?.password,
-        fullname: user?.fullname,
-        gender: user?.gender,
-        phone: user?.phone,
-        address: user?.address
-      })
-    }
-    else{
-      setIsLogin(false)
-      setUserData(initialUser)
-      navigate('/')
-    }
-  }, [user, isLogin])
   
+  const [state] = useContext(UserContext)
+  console.log("state", state)
+  // const [userData, setUserData] = useState()
+  
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
 
+  // const navigate = useNavigate()
+  
+  
+  // let { data: user } = useQuery('profileCache', async () => {
+  //   const response = await API.get(`/profile`);
+  //   setUserData(response.data.data)
+  //   console.log(response)
+  //   return response.data.data;
+  // });
+  
   return (
     <Container>
     <Row className="justify-content-center mt-5 mb-3">
@@ -57,13 +42,13 @@ function Profile() {
         <Card className="rounded shadow border-0 bg-dark text-white p-5">
           <div className="d-flex justify-content-between">
             <div className="me-5">
-              <h3>Personal Info</h3>
+              <h3 className='mb-3'>Personal Info</h3>
               <div className="mt-3">
                 {/* Full Name */}
                 <div className="d-flex mb-3 align-items-start">
                   <FaUserCircle className="text-danger me-3 fs-1" />
                   <div>
-                    <h5>{userData.fullname}</h5>
+                    <h5>{state.user.fullname}</h5>
                     <p className="text-muted">Full Name</p>
                   </div>
                 </div>
@@ -71,7 +56,7 @@ function Profile() {
                 <div className="d-flex mb-3 align-items-start">
                   <FaEnvelope className="text-danger me-3 fs-1" />
                   <div>
-                    <h5>{userData.email}</h5>
+                    <h5>{state.user.email}</h5>
                     <p className="text-muted">Email Address</p>
                   </div>
                 </div>
@@ -79,19 +64,19 @@ function Profile() {
                 <div className="d-flex mb-3 align-items-start">
                   <FaRegMoneyBillAlt className="text-danger me-3 fs-1" />
                   <div>
-                    <h5>{userData.status}Active</h5>
+                    <h5>{state.user.status}</h5>
                     <p className="text-muted">Status</p>
                   </div>
                 </div>
                 {/* Gender */}
                 <div className="d-flex mb-3 align-items-start">
-                  {userData.gender === "Male" ? (
+                  {state.user.gender === "Male" ? (
                     <FaMale className="text-danger me-3 fs-1" />
                   ) : (
                     <FaFemale className="text-danger me-3 fs-1" />
                   )}
                   <div>
-                    <h5>{userData.gender}</h5>
+                    <h5>{state.user.gender}</h5>
                     <p className="text-muted">Gender</p>
                   </div>
                 </div>
@@ -99,7 +84,7 @@ function Profile() {
                 <div className="d-flex mb-3 align-items-start">
                   <FaPhone className="text-danger me-3 fs-1" />
                   <div>
-                    <h5>{userData.phone}</h5>
+                    <h5>{state.user.phone}</h5>
                     <p className="text-muted">Phone Number</p>
                   </div>
                 </div>
@@ -107,7 +92,7 @@ function Profile() {
                 <div className="d-flex mb-3 align-items-start">
                   <FaMapMarked className="text-danger me-3 fs-1" />
                   <div>
-                    <h5>{userData.address}</h5>
+                    <h5>{state.user.address}</h5>
                     <p className="text-muted">Address</p>
                   </div>
                 </div>
@@ -118,6 +103,7 @@ function Profile() {
               <Button
                 variant="danger"
                 className="changePhotoBtn mt-2 btn-md px-2 py-1 ms-1"
+                onSubmit={Profile}
               >
                 Change Photo
               </Button>

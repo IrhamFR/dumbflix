@@ -1,14 +1,12 @@
-import React from "react";
 import Logo from "../Images/logo.png";
 import "../App.css";
-import { useState } from "react";
-import ModalRegister from "./ModalRegister";
-import { Button } from "react-bootstrap";
+import { React, useState, useEffect, useContext } from "react";
+import ModalRegister from "./auth/ModalRegister";
+import { Button, Dropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import userPhoto from "../Images/user.png";
-import { Dropdown } from "react-bootstrap";
-import {FaUser, FaMoneyCheckAlt, FaSignOutAlt, FaVideo} from 'react-icons/fa'
+import {FaSignOutAlt, FaVideo} from 'react-icons/fa';
+import { UserContext } from '../context/userContext';
 
 
 function NavbarAdmin() {
@@ -16,21 +14,23 @@ function NavbarAdmin() {
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
-
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [state, dispatch] = useContext(UserContext)
+  const user = localStorage.getItem('token')
+  // const user = JSON.parse(localStorage.getItem("user"));
 
   const [isLogin, setIsLogin] = useState(false);
 
   const navigate = useNavigate()
 
   const handleLogout = () => {
-    localStorage.removeItem("user")
+    localStorage.removeItem("token")
     navigate('/')
   }
 
   useEffect(() => {
-    if (user) setIsLogin(true);
-    else setIsLogin(false)
+    if (user) {
+      setIsLogin(true);
+    } else setIsLogin(false)
   }, [user, handleLogout]);
   
 

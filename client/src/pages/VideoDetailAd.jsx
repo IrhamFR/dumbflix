@@ -9,7 +9,7 @@ function VideoDetailAd() {
   const [isLogin, setIsLogin] =useState(false)
 
   const navigate = useNavigate()
-  const user = JSON.parse(localStorage.getItem('user'))
+  const user = (localStorage.getItem('token'))
 
   useEffect(() => {
     if(user) setIsLogin(true)
