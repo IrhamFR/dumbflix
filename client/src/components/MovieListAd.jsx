@@ -1,10 +1,10 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-function MovieListAd({movieImg, title, year}) {
+function MovieListAd({id, movieImg, title, year}) {
   return (
-    <Link to='/video-admin' className="text-decoration-none">
+    <Link to={`/video-admin/${id}`} className="text-decoration-none">
     <Card className='rounded border-0 bg-black text-white'>
       <Card.Img variant="top" src={movieImg} />
       <Card.Body>
