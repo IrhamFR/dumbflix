@@ -10,6 +10,8 @@ function ModalRegister({ handleClose, show }) {
 
   let navigate = useNavigate()
 
+  const [isRegister, setIsRegister] = useState(true)
+
   const [state, dispatch] = useContext(UserContext);
 
   const [message, setMessage] = useState(null);
@@ -59,7 +61,7 @@ function ModalRegister({ handleClose, show }) {
         console.log(response)
 
         // Notification
-        if (response.data.code === 200) {
+        if (response.status === 200) {
           const alert = (
             <Alert variant="success" className="py-1">
               Register Success
@@ -74,8 +76,6 @@ function ModalRegister({ handleClose, show }) {
             phone: "",
             address: ""
           });
-
-          switchRegister()
         } else {
           const alert = (
             <Alert variant="danger" className="py-1">
@@ -98,12 +98,6 @@ function ModalRegister({ handleClose, show }) {
             payload: response.data.data
           })
 
-          if (response.data.data.status === 'Admin') {
-            navigate('/admin');
-          } else {
-            navigate('/');
-          }
-
           const alert = (
             <Alert variant="success" className="py-1">
               Login Success
@@ -123,10 +117,13 @@ function ModalRegister({ handleClose, show }) {
           );
           setMessage(alert);
         }
-        navigate('/')
+        if(response.data.data.status === "Admin") {
+          navigate('/admin')
+        }else {
+          navigate('/')
+        }
         handleClose()
       }
-
       // Handling response here
     } catch (error) {
       const alert = (
@@ -138,19 +135,17 @@ function ModalRegister({ handleClose, show }) {
       console.log(error);
     }
 
-    e.preventDefault()
-    handleClose()
-    if(isRegister) {
-      localStorage.setItem("token", JSON.stringify(userData))
-    }
+    // e.preventDefault()
+    // handleClose()
+    // if(isRegister) {
+    //   localStorage.setItem("token", JSON.stringify(userData))
+    // }
   });
 
-  const [isRegister, setIsRegister] = useState(true)
-
-  const [userData, setUserData] = useState(form)
+  // const [userData, setUserData] = useState(form)
 
   const switchRegister = () => {
-    setUserData(form)
+    setForm(form)
     setIsRegister(!isRegister)
   }
 
@@ -192,7 +187,7 @@ function ModalRegister({ handleClose, show }) {
                 <Form.Group className="mb-3" controlId="fullname">
                   <Form.Control
                     type="text"
-                    placeholder="Fullname"
+                    placeholder="Name"
                     className="mb-3 bg-secondary text-white formModal"
                     name="fullname"
                     onChange={handleChange}

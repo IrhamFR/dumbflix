@@ -62,7 +62,7 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		Phone:     request.Phone,
 		Address:   request.Address,
 		Subscribe: true,
-		Status:    "Admin",
+		Status:    "user",
 	}
 
 	data, err := h.AuthRepository.Register(user)
