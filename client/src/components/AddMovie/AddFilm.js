@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperclip, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { Button, Alert, Form } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
 import { useMutation } from 'react-query';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { API } from '../../config/api';
 import { styles } from './Styles';
 
@@ -24,23 +24,25 @@ const AddFilm = () => {
 	const [preview, setPreview] = useState(null); //For image preview
 
   	const [form, setForm] = useState({
-		titlefilm: "",
+		title: "",
 		thumbnail: "",
 		year: "",
 		description: "",
 		category_id: 0,
+		titleEpisode: "",
+		thumbnailEpisode: "",
 		linkfilm: "",
 	});
 
-	const [ rates, setRates ] = useState([
-		{ titleEpisode: '', thumbnailEpisode: '', linkfilm: '' }
-	]);
-	
-	const addRate = () => {
-		setRates([ ...rates, { titleEpisode: '', thumbnailEpisode: '', linkfilm: '' } ]);
-	};
-
 	const [message, setMessage] = useState(null);
+
+	// const [ rates, setRates ] = useState([
+	// 	{ titleEpisode: '', thumbnailEpisode: '', linkfilm: '' }
+	// ]);
+	
+	// const addRate = () => {
+	// 	setRates([ ...rates, { titleEpisode: '', thumbnailEpisode: '', linkfilm: '' } ]);
+	// };
 
 	// const handleChange = (event) => {
 	// 	const updateForm = [ ...rates ];
@@ -80,7 +82,7 @@ const AddFilm = () => {
 		  };
 	
 		  const formData = new FormData();
-		  formData.set("titlefilm", form?.titlefilm);
+		  formData.set("title", form?.title);
 		  formData.set("description", form?.description);
 		  formData.set("year", form?.year);
 		  formData.set("category_id", form?.category_id);
@@ -119,7 +121,7 @@ const AddFilm = () => {
 	  useEffect(() => {
 		console.log(form);
 		getCategories();
-	}, [form.thumbnail]);
+	}, [form.thumbnail, form.thumbnailEpisode]);
 
 	return (
 		<div>
@@ -136,8 +138,9 @@ const AddFilm = () => {
 										
 							<input
 								type="text"
-								name= "titlefilm"
-								className="titleFilm"
+								name= "title"
+								id="title"
+								className="title"
 								placeholder="Title"
 								style={styles.customInputTitle}
 								onChange={handleChange}
@@ -200,7 +203,7 @@ const AddFilm = () => {
 								onChange={handleChange}>
 									<option disabled selected>Category</option>
 									<option value="tvSeries">TV Series</option>
-									<option value="movie">Movie</option>
+									<option value="movies">Movies</option>
 								</select>
 							</div>
 							<div className="form-group mb-0">
@@ -216,9 +219,79 @@ const AddFilm = () => {
 							</div>
 						</div>
 					</div>	
-				</div>
+					<div className="form-group mt-3">
+							<div className="form-group mb-2">
+								<div
+									style={{
+										display: 'grid',
+										gridTemplateColumns: 'repeat(2, 1fr)',
+										gridGap: '1rem'
+									}}
+								>
+									<input
+										type="text"
+										name="titleEpisode"
+										data-id=""
+										id="titleEpisode"
+										className="titleEpisode"
+										placeholder="Title Episode"
+										style={styles.customInputTitle}
+										onChange={handleChange}
+									/>
+									<input
+										type="file"
+										name="thumbnailEpisode"
+										data-id=""
+										id="thumbnailEpisode"
+										className="thumbnailEpisode"
+										style={styles.customInputFile}
+										onChange={handleChange}
+									/>
+									<button
+										className="btn-grey"	
+										onClick={() => {
+											document
+											.getElementsByName("thumbnailEpisode")[0]
+											.click();
+										}}
+										style={{
+											width: '40%',
+											height: '50px',
+											fontSize: '15px',
+											textAlign: 'left',
+											float: 'right',
+											justifySelf: 'right'
+										}}
+									>
+										Attach Thumbnail{' '}
+										<div
+											style={{
+												float: 'right',
+												display: 'inline',
+												fontSize: '20px'
+											}}
+										>
+											<FontAwesomeIcon icon={faPaperclip} />
+										</div>
+									</button>
+								</div>
+							</div>
+							<div className="form-group">
+								<input
+									type="text"
+									name="linkfilm"
+									data-id=""
+									id="linkfilm"
+									className="linkfilm"
+									placeholder="Link Film"
+									style={styles.customInput}
+									onChange={handleChange}
+								/>
+							</div>
+						</div>	
+					</div>
 
-				{rates.map((row, index) => {
+				{/* {rates.map((row, index) => {
 					// const titleEpisode = `title-${index}`,
 					// 	attachThumbnailEpisode = `attach-${index}`,
 					// 	linkFilm = `link-${index}`;
@@ -295,8 +368,8 @@ const AddFilm = () => {
 							</div>
 						</div>	
 					);
-				})}
-				<div className="form-group mb-2" style={styles.container}>
+				})} */}
+				<div className="form-group mb-3" style={styles.container}>
 					<button
 						className="btn-grey"
 						style={{
@@ -306,7 +379,7 @@ const AddFilm = () => {
 							backgroundColor: 'rgba(210, 210, 210, 0.25)',
 							border: "2px solid #d2d2d2"
 						}}
-						onClick={addRate}
+						// onClick={addRate}
 					>
 					<FontAwesomeIcon icon={faPlus} />
 					</button>

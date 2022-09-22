@@ -38,7 +38,7 @@ function MovieContainer() {
                   <MovieList 
                     id={movies.id}
                     movieImg={movies.thumbnail}
-                    title={movies.titlefilm}
+                    title={movies.title}
                     year={movies.year}
                   />
               </Col>

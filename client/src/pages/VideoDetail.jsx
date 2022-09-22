@@ -50,7 +50,7 @@ function VideoDetail() {
               </div>
               <div className="col-md-8">
                 <div className="card-body">
-                  <h5 className="card-title fs-2">{films?.titlefilm}</h5>
+                  <h5 className="card-title fs-2">{films?.title}</h5>
                   <div className="mb-4 mt-2">
                   <small className="text-muted">{films?.year}</small> 
                   <small className='border border-secondary ms-2 px-1 ms-3 py-1 rounded text-muted tv-s shadow'>TV Series</small>

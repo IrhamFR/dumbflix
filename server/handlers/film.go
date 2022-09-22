@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	filmsdto "dumbflix/dto/film"
+	filmdto "dumbflix/dto/film"
 	dto "dumbflix/dto/result"
 	"dumbflix/models"
 	"dumbflix/repositories"
@@ -18,6 +18,8 @@ type handlerFilm struct {
 	FilmRepository repositories.FilmRepository
 }
 
+var path_file = "PATH_FILE"
+
 func HandlerFilm(FilmRepository repositories.FilmRepository) *handlerFilm {
 	return &handlerFilm{FilmRepository}
 }
@@ -33,9 +35,8 @@ func (h *handlerFilm) FindFilms(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for i, f := range films {
-		imagePath := os.Getenv("PATH_FILE") + f.ThumbnailFilm
-		films[i].ThumbnailFilm = imagePath
+	for i, p := range films {
+		films[i].ThumbnailFilm = os.Getenv("PATH_FILE") + p.ThumbnailFilm
 	}
 
 	w.WriteHeader(http.StatusOK)
@@ -67,23 +68,35 @@ func (h *handlerFilm) GetFilm(w http.ResponseWriter, r *http.Request) {
 func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	request := new(filmsdto.FilmRequest)
-	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
-		json.NewEncoder(w).Encode(response)
-		return
-	}
+	// request := new(filmsdto.FilmRequest)
+	// if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+	// 	w.WriteHeader(http.StatusBadRequest)
+	// 	response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
+	// 	json.NewEncoder(w).Encode(response)
+	// 	return
+	// }
 
 	dataContext := r.Context().Value("dataFile")
 	filename := dataContext.(string)
 
-	var categoriesId []int
-	for _, r := range r.FormValue("categoryId") {
-		if int(r-'0') >= 0 {
-			categoriesId = append(categoriesId, int(r-'0'))
-		}
+	category_id, _ := strconv.Atoi(r.FormValue("category_id"))
+	request := filmdto.CreateFilmRequest{
+		Title:            r.FormValue("title"),
+		ThumbnailFilm:    filename,
+		Year:             r.FormValue("year"),
+		CategoryID:       category_id,
+		Description:      r.FormValue("description"),
+		TitleEpisode:     r.FormValue("titleEpisode"),
+		ThumbnailEpisode: filename,
+		LinkFilm:         r.FormValue("linkfilm"),
 	}
+
+	// var categoriesId []int
+	// for _, r := range r.FormValue("categoryId") {
+	// 	if int(r-'0') >= 0 {
+	// 		categoriesId = append(categoriesId, int(r-'0'))
+	// 	}
+	// }
 
 	validation := validator.New()
 	err := validation.Struct(request)
@@ -91,16 +104,18 @@ func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		response := dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()}
 		json.NewEncoder(w).Encode(response)
-
 		return
 	}
 
 	film := models.Film{
-		Title:         request.Title,
-		ThumbnailFilm: filename,
-		Year:          request.Year,
-		CategoryID:    request.CategoryID,
-		Description:   request.Description,
+		Title:            request.Title,
+		ThumbnailFilm:    filename,
+		Year:             request.Year,
+		CategoryID:       request.CategoryID,
+		Description:      request.Description,
+		TitleEpisode:     request.TitleEpisode,
+		ThumbnailEpisode: filename,
+		LinkFilm:         request.LinkFilm,
 	}
 
 	film, err = h.FilmRepository.CreateFilm(film)
@@ -122,7 +137,7 @@ func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 func (h *handlerFilm) UpdateFilm(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	request := new(filmsdto.UpdateFilmRequest)
+	request := new(filmdto.UpdateFilmRequest)
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
@@ -149,6 +164,14 @@ func (h *handlerFilm) UpdateFilm(w http.ResponseWriter, r *http.Request) {
 
 	if request.Year != "" {
 		film.Year = request.Year
+	}
+
+	if request.TitleEpisode != "" {
+		film.TitleEpisode = request.TitleEpisode
+	}
+
+	if request.ThumbnailEpisode != "" {
+		film.ThumbnailEpisode = request.ThumbnailEpisode
 	}
 
 	if request.Description != "" {
@@ -178,32 +201,35 @@ func (h *handlerFilm) DeleteFilm(w http.ResponseWriter, r *http.Request) {
 	film, err := h.FilmRepository.GetFilm(id)
 
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		w.WriteHeader(http.StatusBadRequest)
 		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
 		json.NewEncoder(w).Encode(response)
 		return
 	}
 
-	deleteFilm, err := h.FilmRepository.DeleteFilm(film)
+	data, err := h.FilmRepository.DeleteFilm(film)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
+		response := dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()}
 		json.NewEncoder(w).Encode(response)
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	response := dto.SuccessResult{Code: http.StatusOK, Data: deleteFilm}
+	response := dto.SuccessResult{Code: http.StatusOK, Data: convertResponseFilm(data)}
 	json.NewEncoder(w).Encode(response)
 }
 
-func convertResponseFilm(f models.Film) models.FilmResponse {
+func convertResponseFilm(r models.Film) models.FilmResponse {
 	return models.FilmResponse{
-		ID:            f.ID,
-		Title:         f.Title,
-		ThumbnailFilm: f.ThumbnailFilm,
-		Year:          f.Year,
-		Category:      f.Category,
-		Description:   f.Description,
+		ID:               r.ID,
+		Title:            r.Title,
+		ThumbnailFilm:    r.ThumbnailFilm,
+		Year:             r.Year,
+		Category:         r.Category,
+		Description:      r.Description,
+		TitleEpisode:     r.TitleEpisode,
+		ThumbnailEpisode: r.ThumbnailEpisode,
+		LinkFilm:         r.LinkFilm,
 	}
 }

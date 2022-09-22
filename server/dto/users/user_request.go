@@ -7,7 +7,7 @@ type CreateUserRequest struct {
 	Gender    string `json:"gender" form:"gender" validate:"required"`
 	Phone     int    `json:"phone" form:"phone"`
 	Address   string `json:"address" form:"address"`
-	Subscribe bool   `json:"subscribe" form:"subscribe"`
+	Subscribe string `json:"subscribe" form:"subscribe" validate:"required"`
 	Status    string `json:"status" form:"status"`
 }
 
@@ -18,6 +18,6 @@ type UpdateUserRequest struct {
 	Gender    string `json:"gender" form:"gender"`
 	Phone     int    `json:"phone" form:"phone"`
 	Address   string `json:"address" form:"address"`
-	Subscribe bool   `json:"subscribe" form:"subscribe"`
+	Subscribe string `json:"subscribe" form:"subscribe"`
 	Status    string `json:"status" form:"status"`
 }

@@ -32,16 +32,16 @@ function SeriesContainerAd() {
       <Container className="my-5 overflow-hidden" id="" >
         <h3 className="text-light">TV Series</h3>
         <Row>
-          {films?.map((data, index) => {
+          {films?.map((series, index) => {
             return(
               <Col md={2} key={index}>
                 <SeriesListAd 
-                  id={data.id}
-                  seriesImg={data.thumbnail}
-                  title={data.titlefilm}
-                  year={data.year}
+                  id={series.id}
+                  seriesImg={series.thumbnail}
+                  title={series.title}
+                  year={series.year}
                   />
-              </Col>
+            </Col>
             )
           })}
         </Row>

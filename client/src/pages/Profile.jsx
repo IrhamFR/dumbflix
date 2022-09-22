@@ -103,7 +103,7 @@ function Profile() {
               <Button
                 variant="danger"
                 className="changePhotoBtn mt-2 btn-md px-2 py-1 ms-1"
-                onSubmit={Profile}
+                onClick={Profile}
               >
                 Change Photo
               </Button>
