@@ -8,6 +8,7 @@ import { API } from '../../config/api';
 import { styles } from './Styles';
 
 const AddFilm = () => {
+
 	const navigate = useNavigate();
 
 	const getCategories = async () => {
@@ -72,9 +73,10 @@ const AddFilm = () => {
 	  const handleSubmit = useMutation(async (e) => {
 		try {
 		  e.preventDefault();
-	
+
 		  // Configuration Content-type
 		  const config = {
+			method: "POST",
 			headers: {
 			  "Content-type": "multipart/form-data",
 			  Authorization: `Bearer ${localStorage.token}`,

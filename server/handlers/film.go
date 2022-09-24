@@ -76,7 +76,7 @@ func (h *handlerFilm) CreateFilm(w http.ResponseWriter, r *http.Request) {
 	// 	return
 	// }
 
-	dataContext := r.Context().Value("dataFile")
+	dataContext := r.Context().Value("image")
 	filename := dataContext.(string)
 
 	category_id, _ := strconv.Atoi(r.FormValue("category_id"))

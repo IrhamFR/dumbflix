@@ -55,6 +55,16 @@ function ModalRegister({ handleClose, show }) {
           phone: parseInt(form.phone),
           address: form.address,
         }
+      
+        if(form.email === "" || form.password === ""){
+          const alert = (
+            <Alert variant="danger" className="py-1">
+              All Fields Is Required
+            </Alert>
+          );
+          setMessage(alert)
+          return;
+        }
 
         // Insert data user to database
         const response = await API.post('/register', body, config);
@@ -76,6 +86,9 @@ function ModalRegister({ handleClose, show }) {
             phone: "",
             address: ""
           });
+          e.target.reset()
+          switchRegister()
+
         } else {
           const alert = (
             <Alert variant="danger" className="py-1">
