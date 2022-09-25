@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from "react";
 // import dummyPeaky from '../Images/peakyblindersCard.jfif'
-// import episode from '../Images/episode1-peaky.jfif'
+import episode from '../Images/episode1-peaky.jfif'
 // import { Card } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import {API} from '../config/api'
@@ -64,7 +64,7 @@ function VideoDetail() {
           </div>
 
           <div className="cardEpisode">
-            <img src={films?.thumbnailEpisode} alt="episode" className="imgEpisode" />
+            <img src={episode} alt="episode" className="imgEpisode" />
             <small className="text-light">{films?.titleEpisode}</small>
           </div>
         </div>

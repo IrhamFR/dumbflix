@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from "react";
 // import dummyPeaky from '../Images/peakyblindersCard.jfif'
-// import episode from '../Images/episode1-peaky.jfif'
+import episode from '../Images/episode1-peaky.jfif'
 import { Button } from "react-bootstrap";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import {API} from '../config/api'
@@ -67,7 +67,7 @@ function VideoDetailAd() {
             <div className="d-flex justify-content-end">
               <Button className="btn bg-danger text-white border-0 px-5 mt-2 mb-4" as={Link} to='/add-episode'>Add Episode</Button>
             </div>
-            <img src={films?.thumbnailEpisode} alt="episode" className="imgEpisode" />
+            <img src={episode} alt="episode" className="imgEpisode" />
             <small className="text-light">{films?.titleEpisode}</small>
           </div>
         </div>

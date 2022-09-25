@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import MovieList from './MovieList'
-import {useState} from 'react'
+// import {useState} from 'react'
 // import dataMovies from '../dataDummy/DataFakeMovies';
 // import { UserContext } from '../context/UserContext';
 import { useQuery } from 'react-query';
@@ -9,8 +9,8 @@ import {API} from '../config/api'
 
 function MovieContainer() {
 
-  let { data: films } = useQuery('moviesCache', async () => {
-    const response = await API.get('/films');
+  let { data: film } = useQuery('moviesCache', async () => {
+    const response = await API.get('/film');
     console.log("response film", response)
     
     const resultResponse = response.data.data;
@@ -25,14 +25,14 @@ function MovieContainer() {
     return resultFilter
   });
 
-  console.log(films);
+  console.log(film);
 
   return (
     <div >
       <Container className="my-5 overflow-hidden" id="" >
         <h3 className="text-light">Movies</h3>
         <Row>
-          {films?.map((movies, index) => {
+          {film?.map((movies, index) => {
             return(
               <Col md={2} key={index}>
                   <MovieList 

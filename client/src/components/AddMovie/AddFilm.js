@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperclip, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { Button, Alert } from "react-bootstrap";
+import { Button, Alert, Form } from "react-bootstrap";
 import { useMutation } from 'react-query';
 import { useNavigate } from "react-router-dom";
 import { API } from '../../config/api';
@@ -21,7 +21,7 @@ const AddFilm = () => {
 	};
 
 	const [categories, setCategories] = useState([]); //Store all category data
-	const [categoryId, setCategoryId] = useState([]);
+	// const [categoryId, setCategoryId] = useState([]);
 	const [preview, setPreview] = useState(null); //For image preview
 
   	const [form, setForm] = useState({
@@ -31,7 +31,7 @@ const AddFilm = () => {
 		description: "",
 		category_id: 0,
 		titleEpisode: "",
-		thumbnailEpisode: "",
+		// thumbnailEpisode: "",
 		linkfilm: "",
 	});
 
@@ -95,11 +95,11 @@ const AddFilm = () => {
 			form.thumbnail[0].name
 		  );
 		  formData.set("titleEpisode", form?.titleEpisode);
-		  formData.set(
-			"thumbnailEpisode",
-			form.thumbnailEpisode[0],
-			form.thumbnailEpisode[0].name
-		  );
+		//   formData.set(
+		// 	"thumbnailEpisode",
+		// 	form.thumbnailEpisode[0],
+		// 	form.thumbnailEpisode[0].name
+		//   );
 	
 		  console.log(form);
 	
@@ -123,7 +123,7 @@ const AddFilm = () => {
 	  useEffect(() => {
 		console.log(form);
 		getCategories();
-	}, [form.thumbnail, form.thumbnailEpisode]);
+	}, [form.thumbnail]);
 
 	return (
 		<div>
@@ -137,32 +137,19 @@ const AddFilm = () => {
 							gridTemplateColumns: 'repeat(2, 1fr)',	
 							gridGap: '1rem'
 							}}>
-										
-							<input
+							
+							<Form.Group>
+								<Form.Control
 								type="text"
 								name= "title"
 								id="title"
 								className="title"
 								placeholder="Title"
 								style={styles.customInputTitle}
-								onChange={handleChange}
-							/>
-							<input
-								type="file"
-								name="thumbnail"
-								data-id=""
-								id="thumbnail"
-								className="thumbnail"
-								style={styles.customInputFile}
-								onChange={handleChange}
-							/>
-							<button
-								className="btn-grey"
-								onClick={() => {
-									document
-									.getElementsByName("thumbnail")[0]
-									.click();
-								}}
+								onChange={handleChange} />
+							</Form.Group>
+							<Form.Group>
+								<button 
 								style={{
 									width: '40%',
 									height: '50px',
@@ -170,19 +157,27 @@ const AddFilm = () => {
 									textAlign: 'left',
 									float: 'right',
 									justifySelf: 'right'
-								}}
-								>
-								Attach Thumbnail{' '}
-								<div
-									style={{
-										float: 'right',
-										display: 'inline',
-										fontSize: '20px'
-									}}
-								>
-									<FontAwesomeIcon icon={faPaperclip} />
-								</div>
-							</button>
+								}}>
+									<input
+									id="attachThumbnail"
+									type="file"
+									onChange={handleChange}
+									name="thumbnail"
+									/>
+									<label for="attachThumbnail">
+									Attach Thumbnail{' '}
+										<span 
+											style={{
+												display: 'flex',
+												float: 'right',
+												display: 'inline',
+												fontSize: '20px'
+											}}>
+											<FontAwesomeIcon icon={faPaperclip} />
+										</span>
+									</label>
+								</button>
+							</Form.Group>
 						</div>	
 					</div>
 					<div className="form-group mb-4">
@@ -203,9 +198,11 @@ const AddFilm = () => {
 								<select name="category_id" id="category_id" 
 								style={styles.customInput} 
 								onChange={handleChange}>
-									<option disabled selected>Category</option>
-									<option value="tvSeries">TV Series</option>
-									<option value="movies">Movies</option>
+									<option disabled selected>
+										Category
+										</option>
+									<option className="bg-dark" value="2">TV Series</option>
+									<option className="bg-dark" value="1">Movies</option>
 								</select>
 							</div>
 							<div className="form-group mb-0">
@@ -240,22 +237,8 @@ const AddFilm = () => {
 										style={styles.customInputTitle}
 										onChange={handleChange}
 									/>
-									<input
-										type="file"
-										name="thumbnailEpisode"
-										data-id=""
-										id="thumbnailEpisode"
-										className="thumbnailEpisode"
-										style={styles.customInputFile}
-										onChange={handleChange}
-									/>
-									<button
-										className="btn-grey"	
-										onClick={() => {
-											document
-											.getElementsByName("thumbnailEpisode")[0]
-											.click();
-										}}
+									<Form.Group>
+										<span 
 										style={{
 											width: '40%',
 											height: '50px',
@@ -263,19 +246,27 @@ const AddFilm = () => {
 											textAlign: 'left',
 											float: 'right',
 											justifySelf: 'right'
-										}}
-									>
-										Attach Thumbnail{' '}
-										<div
-											style={{
-												float: 'right',
-												display: 'inline',
-												fontSize: '20px'
-											}}
-										>
-											<FontAwesomeIcon icon={faPaperclip} />
-										</div>
-									</button>
+										}}>
+											{/* <input
+											id="attachThumbnail"
+											type="file"
+											onChange={handleChange}
+											name="thumbnailEpisode"
+											/> */}
+											<label for="attachThumbnail">
+											Attach Thumbnail{' '}
+												<span 
+													style={{
+														display: 'flex',
+														float: 'right',
+														display: 'inline',
+														fontSize: '20px'
+													}}>
+													<FontAwesomeIcon icon={faPaperclip} />
+												</span>
+											</label>
+										</span>
+									</Form.Group>
 								</div>
 							</div>
 							<div className="form-group">
@@ -297,7 +288,6 @@ const AddFilm = () => {
 					// const titleEpisode = `title-${index}`,
 					// 	attachThumbnailEpisode = `attach-${index}`,
 					// 	linkFilm = `link-${index}`;
-
 					return (
 						<div key={index} style={styles.container} className="mt-3" onSubmit={(e) => { handleSubmit.mutate(e) }}>
 							<div className="form-group mb-2">
