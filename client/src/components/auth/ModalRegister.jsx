@@ -8,7 +8,7 @@ import { API } from '../../config/api';
 
 function ModalRegister({ handleClose, show }) {
 
-  let navigate = useNavigate()
+  const navigate = useNavigate()
 
   const [isRegister, setIsRegister] = useState(true)
 
@@ -130,7 +130,7 @@ function ModalRegister({ handleClose, show }) {
           );
           setMessage(alert);
         }
-        if(response.data.data.status === "Admin") {
+        if(response.data.data.role === "Admin") {
           navigate('/admin')
         }else {
           navigate('/')
@@ -158,7 +158,7 @@ function ModalRegister({ handleClose, show }) {
   // const [userData, setUserData] = useState(form)
 
   const switchRegister = () => {
-    setForm(form)
+    // setForm(form)
     setIsRegister(!isRegister)
   }
 

@@ -52,11 +52,13 @@ func (h *handler) GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	userResponse := usersdto.UserResponse{
+		ID:       user.ID,
 		FullName: user.FullName,
 		Email:    user.Email,
 		Gender:   user.Gender,
 		Phone:    user.Phone,
 		Address:  user.Address,
+		Role:     "user",
 	}
 
 	w.WriteHeader(http.StatusOK)
@@ -94,6 +96,7 @@ func (h *handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 		Address:   request.Address,
 		Subscribe: request.Subscribe,
 		Status:    request.Status,
+		Role:      request.Role,
 	}
 
 	data, err := h.UserRepository.CreateUser(user)

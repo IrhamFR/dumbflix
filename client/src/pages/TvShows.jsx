@@ -3,6 +3,9 @@ import SeriesContainer from "../components/SeriesContainer";
 import bgHero from '../Images/la-casa-de-papel-logo.png'
 
 const TvShows = () => {
+  const title = "Series List";
+  document.title = "Dumbflix | " + title;
+
   return (
     <>
       <div>

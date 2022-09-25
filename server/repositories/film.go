@@ -8,7 +8,6 @@ import (
 
 type FilmRepository interface {
 	FindFilms() ([]models.Film, error)
-	FindCategoryByID(CategoryID []int) ([]models.Category, error)
 	GetFilm(ID int) (models.Film, error)
 	CreateFilm(film models.Film) (models.Film, error)
 	UpdateFilm(film models.Film) (models.Film, error)
@@ -24,13 +23,6 @@ func (r *repository) FindFilms() ([]models.Film, error) {
 	err := r.db.Preload("Category").Find(&films).Error
 
 	return films, err
-}
-
-func (r *repository) FindCategoryByID(CategoryID []int) ([]models.Category, error) {
-	var categories []models.Category
-	err := r.db.Find(&categories, CategoryID).Error
-
-	return categories, err
 }
 
 func (r *repository) GetFilm(ID int) (models.Film, error) {

@@ -8,26 +8,25 @@ type User struct {
 	Email     string    `json:"email" gorm:"type: varchar(255)"`
 	Password  string    `json:"password" gorm:"type: varchar(255)"`
 	Gender    string    `json:"gender" gorm:"type: varchar(255)"`
-	Phone     int       `json:"phone" gorm:"type:int"`
+	Phone     string    `json:"phone" gorm:"type: varchar(255)"`
 	Address   string    `json:"address" gorm:"type: varchar(255)"`
 	Subscribe string    `json:"subscribe" gorm:"type: varchar(255)"`
 	Status    string    `json:"status" gorm:"type: varchar(255)"`
-	Token     string    `json:"token" gorm:"type: varchar(255)"`
+	Role      string    `json:"role" gorm:"type: varchar(255)"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-type UserResponse struct {
+type UserTransactionResponse struct {
 	ID        int       `json:"id"`
 	FullName  string    `json:"fullname" gorm:"type: varchar(255)"`
 	Email     string    `json:"email" gorm:"type: varchar(255)"`
 	Password  string    `json:"password" gorm:"type: varchar(255)"`
 	Gender    string    `json:"gender" gorm:"type: varchar(255)"`
-	Phone     int       `json:"phone" gorm:"type:int"`
+	Phone     string    `json:"phone" gorm:"type: varchar(255)"`
 	Address   string    `json:"address" gorm:"type: varchar(255)"`
 	Subscribe string    `json:"subscribe" gorm:"type: varchar(255)"`
 	Status    string    `json:"status" gorm:"type: varchar(255)"`
-	Token     string    `json:"token" gorm:"type: varchar(255)"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
@@ -38,7 +37,7 @@ type UserAuthResponse struct {
 	Email     string    `json:"email"`
 	Password  string    `json:"password"`
 	Gender    string    `json:"gender"`
-	Phone     int       `json:"phone"`
+	Phone     string    `json:"phone"`
 	Address   string    `json:"address"`
 	Subscribe string    `json:"subscribe" gorm:"type:varchar(50)"`
 	Status    string    `gorm:"type: varchar(255)" json:"status"`
@@ -46,7 +45,7 @@ type UserAuthResponse struct {
 	UpdatedAt time.Time `json:"-"`
 }
 
-func (UserResponse) TableName() string {
+func (UserTransactionResponse) TableName() string {
 	return "users"
 }
 

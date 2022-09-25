@@ -13,7 +13,7 @@ type TransactionRepository interface {
 	CreateTransaction(transaction models.Transaction) (models.Transaction, error)
 	UpdateTransaction(status string, ID string) error
 	UpdatesTransaction(transaction models.Transaction) (models.Transaction, error)
-	DeleteTransaction(transaction models.Transaction, ID int) (models.Transaction, error)
+	DeleteTransaction(transaction models.Transaction) (models.Transaction, error)
 	GetOneTransaction(ID string) (models.Transaction, error)
 }
 
@@ -72,7 +72,7 @@ func (r *repository) UpdatesTransaction(transaction models.Transaction) (models.
 	return transaction, err
 }
 
-func (r *repository) DeleteTransaction(transaction models.Transaction, ID int) (models.Transaction, error) {
+func (r *repository) DeleteTransaction(transaction models.Transaction) (models.Transaction, error) {
 	err := r.db.Preload("User").Delete(&transaction).Error
 
 	return transaction, err

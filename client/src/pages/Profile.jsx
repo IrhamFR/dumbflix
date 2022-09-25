@@ -8,14 +8,26 @@ import {
   FaRegMoneyBillAlt,
   FaUserCircle,
 } from "react-icons/fa";
-import {Container, Row, Col, Card, Button} from 'react-bootstrap'
+import {Container, Row, Col, Card, Button, Badge} from 'react-bootstrap'
 // import { useNavigate } from 'react-router-dom';
 import profileUser from '../Images/profileUser.png'
 import { UserContext } from '../context/userContext'
 import { API, setAuthToken } from '../config/api'
 // import { useQuery } from 'react-query'
 
+const initialUser = {
+  fullname: "",
+  email: "",
+  gender: "",
+  phone: "",
+  address: "",
+  subscribe: false
+}
+
 function Profile() {
+
+  const title = "My Profile";
+  document.title = "Dumbflix | " + title;
   
   const [state] = useContext(UserContext)
   console.log("state", state)
@@ -48,7 +60,7 @@ function Profile() {
                 <div className="d-flex mb-3 align-items-start">
                   <FaUserCircle className="text-danger me-3 fs-1" />
                   <div>
-                    <h5>{state.user.fullname}</h5>
+                    <h5>{state.user.fullname} {state.isAdmin && (<Badge className='ms-1' bg="secondary">Admin</Badge>)}</h5>
                     <p className="text-muted">Full Name</p>
                   </div>
                 </div>
@@ -64,7 +76,7 @@ function Profile() {
                 <div className="d-flex mb-3 align-items-start">
                   <FaRegMoneyBillAlt className="text-danger me-3 fs-1" />
                   <div>
-                    <h5>{state.user.status}</h5>
+                    <h5>Active</h5>
                     <p className="text-muted">Status</p>
                   </div>
                 </div>
@@ -103,7 +115,6 @@ function Profile() {
               <Button
                 variant="danger"
                 className="changePhotoBtn mt-2 btn-md px-2 py-1 ms-1"
-                onClick={Profile}
               >
                 Change Photo
               </Button>

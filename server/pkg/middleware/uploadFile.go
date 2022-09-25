@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"context"
-	dto "dumbflix/dto/result"
+	// dto "dumbflix/dto/result"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -20,13 +20,13 @@ func UploadFile(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
-			json.NewEncoder(w).Encode(response)
-			return
-		}
-		defer file.Close()
+		// if err != nil {
+		// 	w.WriteHeader(http.StatusBadRequest)
+		// 	response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
+		// 	json.NewEncoder(w).Encode(response)
+		// 	return
+		// }
+		// defer file.Close()
 
 		const MAX_UPLOAD_SIZE = 10 << 20 // 10MB
 		// Parse our multipart form, 10 << 20 specifies a maximum
@@ -52,7 +52,6 @@ func UploadFile(next http.HandlerFunc) http.HandlerFunc {
 
 		// Create a temporary file within our temp-images directory that follows
 		// a particular naming pattern
-		defer tempFile.Close()
 
 		// read all of the contents of our uploaded file into a
 		// byte array

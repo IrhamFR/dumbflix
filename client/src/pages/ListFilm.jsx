@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 
 function ListFilm() {
 
+  const title = "List";
+  document.title = "Dumbflix | " + title;
+
   const [category, setCategory] = useState("Category")
 
 

@@ -18,11 +18,12 @@ import (
 )
 
 type handlerAuth struct {
-	AuthRepository repositories.AuthRepository
+	AuthRepository    repositories.AuthRepository
+	ProfileRepository repositories.ProfileRepository
 }
 
-func HandlerAuth(AuthRepository repositories.AuthRepository) *handlerAuth {
-	return &handlerAuth{AuthRepository}
+func HandlerAuth(AuthRepository repositories.AuthRepository, ProfileRepository repositories.ProfileRepository) *handlerAuth {
+	return &handlerAuth{AuthRepository, ProfileRepository}
 }
 
 func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
@@ -55,28 +56,27 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user := models.User{
-		FullName:  request.FullName,
-		Email:     request.Email,
-		Password:  password,
-		Gender:    request.Gender,
-		Phone:     request.Phone,
-		Address:   request.Address,
-		Subscribe: "false",
-		Status:    "user",
+		FullName: request.FullName,
+		Email:    request.Email,
+		Password: password,
+		Gender:   request.Gender,
+		Phone:    request.Phone,
+		Address:  request.Address,
+		Role:     "user",
 	}
 
-	data, err := h.AuthRepository.Register(user)
+	dataUser, err := h.AuthRepository.Register(user)
 
-	if data.ID <= 2 {
-		data.Status = "Admin"
-		data, err := h.AuthRepository.Register(data)
+	if dataUser.ID <= 2 {
+		dataUser.Role = "Admin"
+		dataUser, err := h.AuthRepository.RegisterUpdateAuth(dataUser)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			response := dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()}
 			json.NewEncoder(w).Encode(response)
 		}
 		w.WriteHeader(http.StatusOK)
-		response := dto.SuccessResult{Code: http.StatusOK, Data: data}
+		response := dto.SuccessResult{Code: http.StatusOK, Data: dataUser}
 		json.NewEncoder(w).Encode(response)
 	}
 
@@ -85,9 +85,27 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		response := dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()}
 		json.NewEncoder(w).Encode(response)
 	}
-	w.WriteHeader(http.StatusOK)
-	response := dto.SuccessResult{Code: http.StatusOK, Data: data}
-	json.NewEncoder(w).Encode(response)
+
+	profileData := models.Profile{
+		Gender:    request.Gender,
+		Address:   request.Address,
+		Phone:     request.Phone,
+		Subscribe: false,
+	}
+
+	getProfileData, errProfile := h.ProfileRepository.AddProfile(profileData)
+	if errProfile != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		response := dto.ErrorResult{Code: http.StatusInternalServerError, Message: errProfile.Error()}
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	fmt.Println(getProfileData)
+
+	// w.WriteHeader(http.StatusOK)
+	// response := dto.SuccessResult{Code: http.StatusOK, Data: data}
+	// json.NewEncoder(w).Encode(response)
 }
 
 func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
@@ -146,6 +164,7 @@ func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
 		Phone:    user.Phone,
 		Address:  user.Address,
 		Token:    token,
+		Role:     user.Role,
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -159,15 +178,29 @@ func (h *handlerAuth) CheckAuth(w http.ResponseWriter, r *http.Request) {
 	userInfo := r.Context().Value("userInfo").(jwt.MapClaims)
 	userExp := int(userInfo["id"].(float64))
 
-	var status string
-	status = "active"
+	// var status string
+	// status = "active"
 
-	if int(time.Now().Unix()) > int(userExp) {
-		status = "expired"
+	// if int(time.Now().Unix()) > int(userExp) {
+	// 	status = "expired"
+	// }
+
+	user, err := h.AuthRepository.Getuser(userExp)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
+		json.NewEncoder(w).Encode(response)
+		return
 	}
 
 	CheckAuthResponse := authdto.CheckAuthResponse{
-		Status: status,
+		FullName: user.FullName,
+		Email:    user.Email,
+		Status:   user.Status,
+		Gender:   user.Gender,
+		Phone:    user.Phone,
+		Address:  user.Address,
+		Role:     user.Role,
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -175,16 +208,16 @@ func (h *handlerAuth) CheckAuth(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
-// func (h *handlerAuth) GetAllUser(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("Content-Type", "application/json")
+func (h *handlerAuth) GetAllUser(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 
-// 	Users, err := h.AuthRepository.GetAllUsers()
-// 	if err != nil {
-// 		w.WriteHeader(http.StatusInternalServerError)
-// 		json.NewEncoder(w).Encode(err.Error())
-// 	}
+	Users, err := h.AuthRepository.GetAllUsers()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(err.Error())
+	}
 
-// 	w.WriteHeader(http.StatusOK)
-// 	response := dto.SuccessResult{Code: http.StatusOK, Data: Users}
-// 	json.NewEncoder(w).Encode(response)
-// }
+	w.WriteHeader(http.StatusOK)
+	response := dto.SuccessResult{Code: http.StatusOK, Data: Users}
+	json.NewEncoder(w).Encode(response)
+}

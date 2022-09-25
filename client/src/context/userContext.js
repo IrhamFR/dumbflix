@@ -18,11 +18,11 @@ const reducer = (state, action) => {
       localStorage.setItem("token", payload.token);
       console.log("in user context");
       console.log("payload", payload);
-      console.log("status", payload.status);
-      console.log("is admin", payload.status === "Admin" ? true : false);
+      console.log("role", payload.role);
+      console.log("is admin", payload.role === "Admin" ? true : false);
       return {
         isLogin: true,
-        isAdmin: payload.role === "Admin" ? true : false,
+        isAdmin: payload.role === "Admin",
         user: payload,
       };
     case "AUTH_ERROR":

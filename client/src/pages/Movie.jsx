@@ -3,6 +3,9 @@ import MoviesContainer from "../components/MovieContainer";
 import bgHero from '../Images/la-casa-de-papel-logo.png'
 
 const Movie = () => {
+  const title = "Movie List";
+  document.title = "Dumbflix | " + title;
+
   return (
     <>
       <div>

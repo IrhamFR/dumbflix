@@ -7,6 +7,8 @@ import {API} from '../config/api'
 import { useQuery } from "react-query";
 
 function VideoDetail() {
+  const title = "Now Watching";
+  document.title = "Dumbflix | " + title;
 
   const [isLogin, setIsLogin] =useState(false)
 
@@ -31,14 +33,14 @@ function VideoDetail() {
     return (
       <>
         <div className="d-flex justify-content-center">
-          <iframe
+        <iframe
             width="1000"
             height="500"
             src={films?.linkfilm}
-            title="Peaky Blinders"
+            title={films?.title}
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
+            allowFullScreen
           ></iframe>
         </div>
 
@@ -53,7 +55,7 @@ function VideoDetail() {
                   <h5 className="card-title fs-2">{films?.title}</h5>
                   <div className="mb-4 mt-2">
                   <small className="text-muted">{films?.year}</small> 
-                  <small className='border border-secondary ms-2 px-1 ms-3 py-1 rounded text-muted tv-s shadow'>TV Series</small>
+                  <small className='border border-secondary ms-2 px-1 ms-3 py-1 rounded text-muted tv-s shadow'>Movies</small>
                   </div>
                   <p className="card-text pDetailMain">
                   {films?.description}                  
@@ -64,7 +66,7 @@ function VideoDetail() {
           </div>
 
           <div className="cardEpisode">
-            <img src={episode} alt="episode" className="imgEpisode" />
+            <img src={films?.thumbnail} alt="episode" className="imgEpisode" />
             <small className="text-light">{films?.titleEpisode}</small>
           </div>
         </div>

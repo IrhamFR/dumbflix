@@ -122,11 +122,11 @@
 }
 
 .cardEpisode::after {
-  content: 'In Play Now';
+  content: '⇆ ㅤ ||◁ㅤ❚❚ㅤ▷|| ㅤ ↻';
   position: absolute;
   font-weight: bold;
   top: 35%;
-  left: 40%;
+  left: 50%;
   display: block;
   color: white;
 }

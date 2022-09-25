@@ -10,7 +10,7 @@ import {API} from '../config/api'
 function MovieContainer() {
 
   let { data: film } = useQuery('moviesCache', async () => {
-    const response = await API.get('/film');
+    const response = await API.get('/films');
     console.log("response film", response)
     
     const resultResponse = response.data.data;

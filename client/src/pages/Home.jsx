@@ -3,6 +3,9 @@ import MovieContainer from '../components/MovieContainer'
 import SeriesContainer from '../components/SeriesContainer'
 
 function Home() {
+  const title = "Home";
+  document.title = "Dumbflix | " + title;
+
   return (
     <>
     <div>

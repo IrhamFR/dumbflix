@@ -1,46 +1,30 @@
 package transactionsdto
 
-import "dumbflix/models"
+import (
+	"dumbflix/models"
+	"time"
+)
 
 type TransactionRequest struct {
-	ID        int                 `json:"id" validate:"required"`
-	StartDate string              `json:"startDate" form:"startDate" gorm:"type: varchar(255)"`
-	DueDate   string              `json:"dueDate" form:"dueDate" gorm:"type:varchar(255)"`
+	StartDate time.Time           `json:"startDate"`
+	DueDate   time.Time           `json:"dueDate"`
+	UserID    int                 `json:"userId" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Price     int                 `json:"price"`
 	User      models.UserResponse `json:"user"`
-	UserID    int                 `json:"user_id" form:"user_id" gorm:"-"`
-	Attache   string              `json:"attache" form:"attache" gorm:"type: varchar(255)"`
-	Status    string              `json:"status" form:"status" gorm:"type: varchar(255)"`
 }
 
-type TransactionUpdateRequest struct {
-	StartDate string              `json:"startDate" form:"startDate" gorm:"type: varchar(255)"`
-	DueDate   string              `json:"dueDate" form:"dueDate" gorm:"type:varchar(255)"`
-	UserID    int                 `json:"user_id" form:"user_id" gorm:"-"`
-	User      models.UserResponse `json:"user"`
-	Attache   string              `json:"attache" form:"attache" gorm:"type: varchar(255)"`
-	Status    string              `json:"status" form:"status" gorm:"type: varchar(255)"`
+type CreateTransactionRequest struct {
+	StartDate string `json:"startdate"`
+	DueDate   string `json:"duedate"`
+	UserID    int    `json:"user_id" form:"user_id"`
+	Attache   string `json:"attache" form:"attache" gorm:"type: varchar(255)"`
+	Status    bool   `json:"status" gorm:"type:text" form:"status"`
 }
 
-// type TransactionRequest struct {
-// 	StartDate string `json:"startDate"`
-// 	DueDate   string `json:"dueDate"`
-// 	UserID    int    `json:"user_id" form:"user_id"`
-// 	Attache   string `json:"attache" gorm:"type:varchar(50)" validate:"required"`
-// 	Status    string `json:"status"`
-// }
-
-// type CreatTransactionRequest struct {
-// 	StartDate string `json:"startDate"`
-// 	DueDate   string `json:"dueDate"`
-// 	UserID    int    `json:"user_id" form:"user_id"`
-// 	Attache   string `json:"attache" gorm:"type:varchar(50)" validate:"required"`
-// 	Status    string `json:"status"`
-// }
-
-// type UpdateTransactionRequest struct {
-// 	StartDate string `json:"startDate"`
-// 	DueDate   string `json:"dueDate"`
-// 	UserID    int    `json:"user_id" form:"user_id"`
-// 	Attache   string `json:"attache" gorm:"type:varchar(50)" validate:"required"`
-// 	Status    string `json:"status"`
-// }
+type UpdateTransactionRequest struct {
+	StartDate string `json:"startdate"`
+	DueDate   string `json:"duedate"`
+	UserID    int    `json:"user_id" form:"user_id"`
+	Attache   string `json:"attache" form:"attache" gorm:"type: varchar(255)"`
+	Status    bool   `json:"status" gorm:"type:text" form:"status"`
+}

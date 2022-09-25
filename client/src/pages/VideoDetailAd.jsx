@@ -7,6 +7,8 @@ import {API} from '../config/api'
 import { useQuery } from "react-query";
 
 function VideoDetailAd() {
+  const title = "Detail";
+  document.title = "Dumbflix | " + title;
 
   const [isLogin, setIsLogin] =useState(false)
 
@@ -35,10 +37,10 @@ function VideoDetailAd() {
             width="1000"
             height="500"
             src={films?.linkfilm}
-            title="Peaky Blinders"
+            title={films?.title}
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
+            allowFullScreen
           ></iframe>
         </div>
 
@@ -50,10 +52,10 @@ function VideoDetailAd() {
               </div>
               <div className="col-md-8">
                 <div className="card-body">
-                  <h5 className="card-title fs-2">{films?.titlefilm}</h5>
+                  <h5 className="card-title fs-2">{films?.title}</h5>
                   <div className="mb-4 mt-2">
                   <small className="text-muted">{films?.year}</small> 
-                  <small className='border border-secondary ms-2 px-1 ms-3 py-1 rounded text-muted tv-s shadow'>TV Series</small>
+                  <small className='border border-secondary ms-2 px-1 ms-3 py-1 rounded text-muted tv-s shadow'>{films?.category_id}</small>
                   </div>
                   <p className="card-text pDetailMain">
                   {films?.description}                  
@@ -67,7 +69,7 @@ function VideoDetailAd() {
             <div className="d-flex justify-content-end">
               <Button className="btn bg-danger text-white border-0 px-5 mt-2 mb-4" as={Link} to='/add-episode'>Add Episode</Button>
             </div>
-            <img src={episode} alt="episode" className="imgEpisode" />
+            <img src={films?.thumbnail} alt="episode" className="imgEpisode" />
             <small className="text-light">{films?.titleEpisode}</small>
           </div>
         </div>
