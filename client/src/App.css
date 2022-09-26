@@ -92,12 +92,8 @@
 }
 
 .sectionMain {
-  width: 65%;
+  width: 70%;
   margin: auto;
-}
-
-.cardEpisode {
-  width: 100%;
 }
 
 .pDetailMain {
@@ -119,10 +115,11 @@
 
 .cardEpisode {
   position: relative;
+  width: 40%;
 }
 
 .cardEpisode::after {
-  content: '⇆ ㅤ ||◁ㅤ❚❚ㅤ▷|| ㅤ ↻';
+  /* content: '⇆ ㅤ ||◁ㅤ❚❚ㅤ▷|| ㅤ ↻'; */
   position: absolute;
   font-weight: bold;
   top: 35%;

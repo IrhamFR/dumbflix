@@ -31,7 +31,7 @@ function VideoDetail() {
   })
 
     return (
-      <>
+      <div className="mb-4">
         <div className="d-flex justify-content-center">
         <iframe
             width="1000"
@@ -54,8 +54,8 @@ function VideoDetail() {
                 <div className="card-body">
                   <h5 className="card-title fs-2">{films?.title}</h5>
                   <div className="mb-4 mt-2">
-                  <small className="text-muted">{films?.year}</small> 
-                  <small className='border border-secondary ms-2 px-1 ms-3 py-1 rounded text-muted tv-s shadow'>Movies</small>
+                    <small className="text-muted">{films?.year}</small> 
+                    <small className='border border-secondary ms-2 px-1 ms-3 py-1 rounded text-muted tv-s shadow'>Movies</small>
                   </div>
                   <p className="card-text pDetailMain">
                   {films?.description}                  
@@ -66,11 +66,19 @@ function VideoDetail() {
           </div>
 
           <div className="cardEpisode">
-            <img src={films?.thumbnail} alt="episode" className="imgEpisode" />
+            <iframe
+              width="400"
+              height="250"
+              src={films?.linkfilm}
+              title={films?.title}
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
             <small className="text-light">{films?.titleEpisode}</small>
           </div>
         </div>
-      </>
+      </div>
     );
 }
 

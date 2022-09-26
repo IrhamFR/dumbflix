@@ -104,7 +104,7 @@ const AddEpisode = ({ handleClose, show }) => {
 								/>
 							</div>
 							<div className='d-flex flex-end' style={{marginLeft: "929px"}}>
-								<Button className="btn bg-danger text-white border-0 px-4" as={Link} to='/video-admin'>Add Episode</Button>
+								<Button className="btn bg-danger text-white border-0 px-4" as={Link} to='/video-admin/:id'>Add Episode</Button>
 							</div>
 						</div>
 					);
